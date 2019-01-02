@@ -1,11 +1,26 @@
 (ns todo.handler
   (:require [compojure.core :refer :all]
             [compojure.route :as route]
-            [ring.middleware.defaults :refer [wrap-defaults site-defaults]]))
+            [ring.middleware.json :as json]
+            [ring.util.response :refer [response]]
+            [todo.query :refer :all]))
 
 (defroutes app-routes
-  (GET "/" [] "Hello World")
-  (route/not-found "Not Found"))
+	(GET "/api/todos" []
+		(response (get-todos)))
+	(GET "/api/todos/:id" [id]
+		(response (get-todo (Integer/parseInt id))))
+	(POST "/api/todos" {:keys [params]}
+		(let [{:keys [title description]} params]
+			(response (add-todo title description))))
+	(PUT "/api/todos/:id" [id title is-complete]
+		(response (update-todo (Integer/parseInt id) title is-complete)))
+	(DELETE "/api/todos/:id" [id]
+		(response (delete-todo (Integer/parseInt id))))
+	(route/resources "/")
+	(route/not-found "Not found"))
 
 (def app
-  (wrap-defaults app-routes site-defaults))
+	(-> (handler/api app-routes)
+	(json/wrap-json-params)
+	(json/wrap-json-response)))
