@@ -1,32 +1,32 @@
 (ns todo.query
     (:require [todo.database]
               [korma.core :refer :all]))
-
-(defentity items)
-
+  
+  (defentity items)
+  
 ;;reading items from db
-(defn get-todos []
+  (defn get-todos []
     (select items))
-
+  
 ;;inserting items on db
-(defn add-todo [title description]
+  (defn add-todo [title description]
     (insert items
             (values {:title title :description description})))
 
 ;;deleting items from db
-(defn delete-todo [id]
+  (defn delete-todo [id]
     (delete items
-        (where {:id [= id]})))
-
+            (where {:id [= id]})))
+  
 ;;update items on db
-(defn update-todo [id title is-complete]
+  (defn update-todo [id title is-complete]
     (update items
-        (set-fields {:title title
-                     :is-complete is-complete})
-        (where {:id [= id]})))
-
+            (set-fields {:title title
+                         :is_complete is-complete})
+            (where {:id [= id]})))
+        
 ;;select an especific item from db
-(defn get-todo [id]
+  (defn get-todo [id]
     (first
-        (select items
+      (select items
             (where {:id [= id]}))))

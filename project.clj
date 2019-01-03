@@ -7,7 +7,7 @@
                  [ring/ring-core "1.3.2"]
                  [ring/ring-json "0.3.1"]
                  [korma "0.3.0-RC5"]
-                 [mysql/mysql-connector-java "5.1.6"]
+                 [mysql/mysql-connector-java "8.0.13"]
                  [ring/ring-defaults "0.2.1"]]
   :plugins [[lein-ring "0.9.7"]]
   :ring {:handler todo.handler/app}
